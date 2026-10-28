@@ -10,33 +10,148 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AgendarRouteImport } from './routes/agendar'
+import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as ConfirmacaoRouteImport } from './routes/confirmacao'
+import { Route as MeusAgendamentosRouteImport } from './routes/meus-agendamentos'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAgendamentosRouteImport } from './routes/admin.agendamentos'
+import { Route as AdminBloqueiosRouteImport } from './routes/admin.bloqueios'
+import { Route as AdminDisponibilidadeRouteImport } from './routes/admin.disponibilidade'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendarRoute = AgendarRouteImport.update({
+  id: '/agendar',
+  path: '/agendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmacaoRoute = ConfirmacaoRouteImport.update({
+  id: '/confirmacao',
+  path: '/confirmacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeusAgendamentosRoute = MeusAgendamentosRouteImport.update({
+  id: '/meus-agendamentos',
+  path: '/meus-agendamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
+  id: '/agendamentos',
+  path: '/agendamentos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBloqueiosRoute = AdminBloqueiosRouteImport.update({
+  id: '/bloqueios',
+  path: '/bloqueios',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDisponibilidadeRoute = AdminDisponibilidadeRouteImport.update({
+  id: '/disponibilidade',
+  path: '/disponibilidade',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/agendar': typeof AgendarRoute
+  '/cadastro': typeof CadastroRoute
+  '/confirmacao': typeof ConfirmacaoRoute
+  '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/bloqueios': typeof AdminBloqueiosRoute
+  '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agendar': typeof AgendarRoute
+  '/cadastro': typeof CadastroRoute
+  '/confirmacao': typeof ConfirmacaoRoute
+  '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/bloqueios': typeof AdminBloqueiosRoute
+  '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/agendar': typeof AgendarRoute
+  '/cadastro': typeof CadastroRoute
+  '/confirmacao': typeof ConfirmacaoRoute
+  '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/bloqueios': typeof AdminBloqueiosRoute
+  '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/agendar'
+    | '/cadastro'
+    | '/confirmacao'
+    | '/meus-agendamentos'
+    | '/admin/agendamentos'
+    | '/admin/bloqueios'
+    | '/admin/disponibilidade'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/agendar'
+    | '/cadastro'
+    | '/confirmacao'
+    | '/meus-agendamentos'
+    | '/admin/agendamentos'
+    | '/admin/bloqueios'
+    | '/admin/disponibilidade'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/agendar'
+    | '/cadastro'
+    | '/confirmacao'
+    | '/meus-agendamentos'
+    | '/admin/agendamentos'
+    | '/admin/bloqueios'
+    | '/admin/disponibilidade'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AgendarRoute: typeof AgendarRoute
+  CadastroRoute: typeof CadastroRoute
+  ConfirmacaoRoute: typeof ConfirmacaoRoute
+  MeusAgendamentosRoute: typeof MeusAgendamentosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +163,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agendar': {
+      id: '/agendar'
+      path: '/agendar'
+      fullPath: '/agendar'
+      preLoaderRoute: typeof AgendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmacao': {
+      id: '/confirmacao'
+      path: '/confirmacao'
+      fullPath: '/confirmacao'
+      preLoaderRoute: typeof ConfirmacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meus-agendamentos': {
+      id: '/meus-agendamentos'
+      path: '/meus-agendamentos'
+      fullPath: '/meus-agendamentos'
+      preLoaderRoute: typeof MeusAgendamentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/agendamentos': {
+      id: '/admin/agendamentos'
+      path: '/agendamentos'
+      fullPath: '/admin/agendamentos'
+      preLoaderRoute: typeof AdminAgendamentosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/bloqueios': {
+      id: '/admin/bloqueios'
+      path: '/bloqueios'
+      fullPath: '/admin/bloqueios'
+      preLoaderRoute: typeof AdminBloqueiosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/disponibilidade': {
+      id: '/admin/disponibilidade'
+      path: '/disponibilidade'
+      fullPath: '/admin/disponibilidade'
+      preLoaderRoute: typeof AdminDisponibilidadeRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminAgendamentosRoute: typeof AdminAgendamentosRoute
+  AdminBloqueiosRoute: typeof AdminBloqueiosRoute
+  AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAgendamentosRoute: AdminAgendamentosRoute,
+  AdminBloqueiosRoute: AdminBloqueiosRoute,
+  AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AgendarRoute: AgendarRoute,
+  CadastroRoute: CadastroRoute,
+  ConfirmacaoRoute: ConfirmacaoRoute,
+  MeusAgendamentosRoute: MeusAgendamentosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
