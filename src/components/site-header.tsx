@@ -3,7 +3,7 @@ import { BUSINESS } from "@/lib/booking/data";
 
 export function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2.5">
+    <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label="Ateliê Lume — início">
       <span className="grid size-9 place-items-center rounded-full bg-blush font-display text-xl text-primary">L</span>
       <span className="leading-tight">
         <span className="block font-display text-xl">{BUSINESS.name}</span>
@@ -18,11 +18,11 @@ export function SiteHeader() {
   const active = { className: "rounded-full px-3 py-2 text-sm bg-secondary text-secondary-foreground" };
   return (
     <header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
         <Logo />
-        <nav className="flex items-center gap-1">
+        <nav aria-label="Navegação principal" className="flex items-center gap-1">
           <Link to="/meus-agendamentos" className={cls} activeProps={active}>Meus agendamentos</Link>
-          <Link to="/admin" className={`${cls} hidden sm:inline-flex`} activeProps={active}>Admin</Link>
+          <Link to="/admin" className={cls} activeProps={active}>Painel</Link>
         </nav>
       </div>
     </header>
@@ -41,7 +41,7 @@ export function PageShell({ children }: { children: React.ReactNode }) {
 export function Steps({ current }: { current: 1 | 2 | 3 }) {
   const steps = ["Cadastro", "Agendamento", "Confirmação"];
   return (
-    <ol className="mb-8 flex items-center gap-2 text-xs sm:text-sm" aria-label="Etapas">
+    <ol className="mb-8 flex flex-wrap items-center gap-2 text-xs sm:text-sm" aria-label="Etapas">
       {steps.map((s, i) => {
         const n = i + 1;
         const state = n < current ? "done" : n === current ? "now" : "next";
