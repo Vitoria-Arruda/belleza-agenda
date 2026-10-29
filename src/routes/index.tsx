@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Ateliê Lume — Beleza & bem-estar com hora marcada" },
       { name: "description", content: "Conheça nossos serviços de estética e agende seu horário em poucos passos." },
       { property: "og:title", content: "Ateliê Lume — Beleza & bem-estar" },

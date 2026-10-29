@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -41,7 +42,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
         <h1 className="text-2xl text-foreground">Esta página não carregou</h1>
         <p className="mt-2 text-sm text-muted-foreground">Algo deu errado. Tente novamente.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button onClick={() => { router.invalidate(); reset(); }} className="btn btn-primary">Tentar novamente</button>
+          <Button variant="plain" size="auto" onClick={() => { router.invalidate(); reset(); }} className="btn btn-primary">Tentar novamente</Button>
           <a href="/" className="btn btn-outline">Início</a>
         </div>
       </div>

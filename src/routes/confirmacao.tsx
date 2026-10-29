@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageShell, Steps } from "@/components/site-header";
@@ -8,6 +9,8 @@ import { fmtTime, getSlots } from "@/lib/booking/availability";
 export const Route = createFileRoute("/confirmacao")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Confirmação — Ateliê Lume" },
       { name: "description", content: "Revise e confirme seu agendamento." },
       { property: "og:title", content: "Confirmação — Ateliê Lume" },
@@ -78,7 +81,7 @@ function Confirmacao() {
         {(!stillFree || error) && <p role="alert" className="mt-4 rounded-lg bg-secondary p-3 text-sm text-secondary-foreground">Este horário deixou de estar disponível. Volte e escolha outro.</p>}
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Link to="/agendar" className="btn btn-outline">Voltar para editar</Link>
-          <button
+          <Button variant="plain" size="auto"
             className="btn btn-primary" disabled={!stillFree}
             onClick={() => {
               if (!draft.date || !draft.time) return;
@@ -87,7 +90,7 @@ function Confirmacao() {
               setDraft({ notes: "" });
               setDone(true);
             }}
-          >Confirmar agendamento</button>
+          >Confirmar agendamento</Button>
         </div>
       </div>
     </PageShell>

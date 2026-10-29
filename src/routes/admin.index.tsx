@@ -3,7 +3,16 @@ import { useBooking } from "@/lib/booking/store";
 import { dateKey, fmtTime } from "@/lib/booking/availability";
 import { WEEKDAYS, WEEK_ORDER, fmtDate, getService } from "@/lib/booking/data";
 
-export const Route = createFileRoute("/admin/")({ component: Overview });
+export const Route = createFileRoute("/admin/")({
+  head: () => ({ meta: [
+    { title: "Visão geral da agenda — Ateliê Lume" },
+    { name: "description", content: "Acompanhe os próximos compromissos e o expediente do Ateliê Lume." },
+    { property: "og:title", content: "Visão geral da agenda — Ateliê Lume" },
+    { property: "og:description", content: "Acompanhe os próximos compromissos e o expediente do Ateliê Lume." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
+  component: Overview });
 
 function Overview() {
   const { bookings, blocks, weekly } = useBooking();

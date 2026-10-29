@@ -4,6 +4,8 @@ import { SiteHeader } from "@/components/site-header";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Painel administrativo — Ateliê Lume" },
       { name: "description", content: "Configure disponibilidade, bloqueios e consulte agendamentos." },
       { property: "og:title", content: "Painel administrativo — Ateliê Lume" },

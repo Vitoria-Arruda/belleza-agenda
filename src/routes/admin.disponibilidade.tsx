@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
@@ -5,7 +6,16 @@ import { useBooking } from "@/lib/booking/store";
 import { validateDay, type Weekly } from "@/lib/booking/availability";
 import { WEEKDAYS, WEEK_ORDER } from "@/lib/booking/data";
 
-export const Route = createFileRoute("/admin/disponibilidade")({ component: Disponibilidade });
+export const Route = createFileRoute("/admin/disponibilidade")({
+  head: () => ({ meta: [
+    { title: "Disponibilidade semanal — Ateliê Lume" },
+    { name: "description", content: "Configure os dias e períodos de atendimento do Ateliê Lume." },
+    { property: "og:title", content: "Disponibilidade semanal — Ateliê Lume" },
+    { property: "og:description", content: "Configure os dias e períodos de atendimento do Ateliê Lume." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
+  component: Disponibilidade });
 
 function Disponibilidade() {
   const { weekly, setWeekly } = useBooking();
@@ -43,10 +53,10 @@ function Disponibilidade() {
                       <input type="time" step={1800} aria-label={`Início período ${i + 1}`} className="field max-w-36" value={p.start} onChange={(e) => update(d, (c) => ({ ...c, periods: c.periods.map((x, j) => (j === i ? { ...x, start: e.target.value } : x)) }))} />
                       <span className="text-sm text-muted-foreground">às</span>
                       <input type="time" step={1800} aria-label={`Fim período ${i + 1}`} className="field max-w-36" value={p.end} onChange={(e) => update(d, (c) => ({ ...c, periods: c.periods.map((x, j) => (j === i ? { ...x, end: e.target.value } : x)) }))} />
-                      <button type="button" className="btn btn-ghost size-11 px-0" aria-label="Remover período" onClick={() => update(d, (c) => ({ ...c, periods: c.periods.filter((_, j) => j !== i) }))}><Trash2 className="size-4" /></button>
+                      <Button variant="plain" size="auto" type="button" className="btn btn-ghost size-11 px-0" aria-label="Remover período" onClick={() => update(d, (c) => ({ ...c, periods: c.periods.filter((_, j) => j !== i) }))}><Trash2 className="size-4" /></Button>
                     </div>
                   ))}
-                  <button type="button" className="btn btn-ghost min-h-10 px-3 text-sm text-primary" onClick={() => update(d, (c) => ({ ...c, periods: [...c.periods, { start: "14:00", end: "18:00" }] }))}><Plus className="size-4" /> Adicionar período</button>
+                  <Button variant="plain" size="auto" type="button" className="btn btn-ghost min-h-10 px-3 text-sm text-primary" onClick={() => update(d, (c) => ({ ...c, periods: [...c.periods, { start: "14:00", end: "18:00" }] }))}><Plus className="size-4" /> Adicionar período</Button>
                   {errors[d] && <p className="text-sm text-destructive" role="alert">{errors[d]}</p>}
                 </div>
               )}
@@ -57,7 +67,7 @@ function Disponibilidade() {
       <div className="sticky bottom-0 mt-6 flex flex-col items-center gap-3 border-t bg-background/95 py-4 sm:flex-row sm:justify-end">
         {saved === "ok" && <p className="text-sm text-sage-foreground" role="status">✓ Disponibilidade salva. O calendário do cliente já foi atualizado.</p>}
         {saved === "err" && <p className="text-sm text-destructive" role="alert">Corrija os erros destacados antes de salvar.</p>}
-        <button className="btn btn-primary w-full sm:w-auto" onClick={() => { if (hasErr) return setSaved("err"); setWeekly(structuredClone(form)); setSaved("ok"); }}>Salvar disponibilidade</button>
+        <Button variant="plain" size="auto" className="btn btn-primary w-full sm:w-auto" onClick={() => { if (hasErr) return setSaved("err"); setWeekly(structuredClone(form)); setSaved("ok"); }}>Salvar disponibilidade</Button>
       </div>
     </div>
   );

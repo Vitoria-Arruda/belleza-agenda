@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { PageShell, Steps } from "@/components/site-header";
@@ -9,6 +10,8 @@ import { fmtTime, getSlots, hasFreeSlot } from "@/lib/booking/availability";
 export const Route = createFileRoute("/agendar")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Novo agendamento — Ateliê Lume" },
       { name: "description", content: "Escolha serviço, data e horário disponíveis." },
       { property: "og:title", content: "Novo agendamento — Ateliê Lume" },
@@ -57,7 +60,7 @@ function Agendar() {
           {SERVICES.map((s) => {
             const sel = s.id === draft.serviceId;
             return (
-              <button
+              <Button variant="plain" size="auto"
                 key={s.id} type="button" role="radio" aria-checked={sel}
                 onClick={() => setDraft({ ...draft, serviceId: s.id, time: undefined })}
                 className={`card p-4 text-left transition ${sel ? "border-primary bg-secondary ring-1 ring-primary" : "hover:border-primary/40"}`}
@@ -68,7 +71,7 @@ function Agendar() {
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">{s.description}</p>
                 <p className="mt-3 text-sm">{brl(s.price)} <span className="text-muted-foreground">· {fmtDuration(s.duration)}</span></p>
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -100,7 +103,7 @@ function Agendar() {
                   const sel = s.time === draft.time;
                   const free = s.state === "livre";
                   return (
-                    <button
+                    <Button variant="plain" size="auto"
                       key={s.time} type="button" disabled={!free} aria-pressed={sel}
                       onClick={() => setDraft({ ...draft, time: s.time })}
                       className={`flex min-h-12 flex-col items-center justify-center rounded-lg border text-sm transition ${
@@ -111,7 +114,7 @@ function Agendar() {
                     >
                       {fmtTime(s.time)}
                       {!free && <span className="text-[0.65rem] no-underline">{STATE_LABEL[s.state]}</span>}
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
@@ -124,7 +127,7 @@ function Agendar() {
 
       <div className="sticky bottom-0 mt-8 -mx-4 flex flex-col items-center gap-2 border-t bg-background/95 px-4 py-4 sm:flex-row sm:justify-end">
         {!canNext && <p className="text-sm text-muted-foreground">Selecione {[!service && "serviço", !draft.date && "data", !draft.time && "horário"].filter(Boolean).join(", ")} para continuar.</p>}
-        <button className="btn btn-primary w-full sm:w-auto" disabled={!canNext} onClick={() => nav({ to: "/confirmacao" })}>Revisar agendamento</button>
+        <Button variant="plain" size="auto" className="btn btn-primary w-full sm:w-auto" disabled={!canNext} onClick={() => nav({ to: "/confirmacao" })}>Revisar agendamento</Button>
       </div>
     </PageShell>
   );
