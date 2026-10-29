@@ -17,6 +17,7 @@ export type Booking = {
 };
 
 export const SLOT_STEP = 30;
+export const isValidTime = (time: string) => /^([01]\d|2[0-3]):[0-5]\d$/.test(time);
 
 export const toMin = (t: string) => {
   const [h, m] = t.split(":").map(Number);
@@ -41,11 +42,22 @@ export function validateDay(day: DayConfig): string | null {
   if (day.periods.length === 0) return "Adicione ao menos um período.";
   for (const p of day.periods) {
     if (!p.start || !p.end) return "Preencha início e fim.";
+    if (!isValidTime(p.start) || !isValidTime(p.end)) return "Informe horários válidos.";
     if (toMin(p.end) <= toMin(p.start)) return "O horário final deve ser posterior ao inicial.";
   }
   const sorted = [...day.periods].sort((a, b) => toMin(a.start) - toMin(b.start));
   for (let i = 1; i < sorted.length; i++) {
     if (toMin(sorted[i].start) < toMin(sorted[i - 1].end)) return "Os períodos não podem se sobrepor.";
+  }
+  return null;
+}
+
+export function validateBlock(block: Block): string | null {
+  if (!block.date) return "Informe a data.";
+  if (block.kind === "range" && (!block.endDate || block.endDate < block.date)) return "A data final deve ser igual ou posterior à inicial.";
+  if (block.kind === "time") {
+    if (!isValidTime(block.start) || !isValidTime(block.end)) return "Preencha início e fim com horários válidos.";
+    if (toMin(block.end) <= toMin(block.start)) return "O horário final deve ser posterior ao inicial.";
   }
   return null;
 }

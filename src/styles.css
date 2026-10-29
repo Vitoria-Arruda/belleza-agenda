@@ -39,7 +39,7 @@
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
   --background: oklch(0.985 0.006 75);
   --foreground: oklch(0.36 0.02 50);
   --card: oklch(0.995 0.004 75);
@@ -74,7 +74,13 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.01em; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 500; letter-spacing: 0; }
+  body { margin: 0; }
+  button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
+  p, dd { overflow-wrap: anywhere; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
 }
 
 @utility btn {
@@ -101,7 +107,7 @@
   background: var(--destructive); color: var(--destructive-foreground);
 }
 @utility card {
-  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
 }
 @utility shadow-soft { box-shadow: var(--shadow-soft); }
 @utility field {
@@ -111,5 +117,5 @@
   &[aria-invalid="true"] { border-color: var(--destructive); }
 }
 @utility eyebrow {
-  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted-foreground);
+  font-size: 0.72rem; letter-spacing: 0; text-transform: uppercase; color: var(--muted-foreground);
 }

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useBooking } from "@/lib/booking/store";
-import { dateKey, fmtTime, toMin, type Block } from "@/lib/booking/availability";
+import { dateKey, fmtTime, validateBlock, type Block } from "@/lib/booking/availability";
 import { fmtDate } from "@/lib/booking/data";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 
@@ -29,11 +29,11 @@ function Bloqueios() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     setOk(false);
-    if (!date) return setError("Informe a data.");
-    if (kind === "range" && (!endDate || endDate < date)) return setError("A data final deve ser igual ou posterior à inicial.");
-    if (kind === "time" && toMin(end) <= toMin(start)) return setError("O horário final deve ser posterior ao inicial.");
     const r = reason.trim() || undefined;
-    addBlock(kind === "day" ? { id: "", kind, date, reason: r } : kind === "time" ? { id: "", kind, date, start, end, reason: r } : { id: "", kind, date, endDate, reason: r });
+    const block: Block = kind === "day" ? { id: "", kind, date, reason: r } : kind === "time" ? { id: "", kind, date, start, end, reason: r } : { id: "", kind, date, endDate, reason: r };
+    const validation = validateBlock(block);
+    if (validation) return setError(validation);
+    addBlock(block);
     setError(""); setReason(""); setOk(true);
   };
 

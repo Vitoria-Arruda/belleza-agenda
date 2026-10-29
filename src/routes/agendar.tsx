@@ -44,7 +44,7 @@ function Agendar() {
     );
   }
 
-  const canNext = !!(service && draft.date && draft.time);
+  const canNext = !!(service && draft.date && draft.time && slots.some((s) => s.time === draft.time && s.state === "livre"));
 
   return (
     <PageShell>

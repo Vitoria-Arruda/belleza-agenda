@@ -20,6 +20,7 @@ export const Route = createFileRoute("/confirmacao")({
 function Confirmacao() {
   const { client, draft, setDraft, addBooking, weekly, blocks, bookings } = useBooking();
   const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
   const service = draft.serviceId ? getService(draft.serviceId) : undefined;
 
   if (done) {
@@ -74,13 +75,15 @@ function Confirmacao() {
             </div>
           ))}
         </dl>
-        {!stillFree && <p className="mt-4 rounded-lg bg-secondary p-3 text-sm text-secondary-foreground">Este horário deixou de estar disponível. Volte e escolha outro.</p>}
+        {(!stillFree || error) && <p role="alert" className="mt-4 rounded-lg bg-secondary p-3 text-sm text-secondary-foreground">Este horário deixou de estar disponível. Volte e escolha outro.</p>}
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Link to="/agendar" className="btn btn-outline">Voltar para editar</Link>
           <button
             className="btn btn-primary" disabled={!stillFree}
             onClick={() => {
-              addBooking({ serviceId: service.id, date: draft.date!, time: draft.time!, duration: service.duration, notes: draft.notes.trim() || undefined, clientName: client.name });
+              if (!draft.date || !draft.time) return;
+              const booking = addBooking({ serviceId: service.id, date: draft.date, time: draft.time, duration: service.duration, notes: draft.notes.trim() || undefined, clientName: client.name });
+              if (!booking) { setError("unavailable"); return; }
               setDraft({ notes: "" });
               setDone(true);
             }}
