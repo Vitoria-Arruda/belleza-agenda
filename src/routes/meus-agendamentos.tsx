@@ -6,6 +6,8 @@ import { useBooking } from "@/lib/booking/store";
 export const Route = createFileRoute("/meus-agendamentos")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Meus agendamentos — Ateliê Lume" },
       { name: "description", content: "Consulte e cancele seus agendamentos." },
       { property: "og:title", content: "Meus agendamentos — Ateliê Lume" },

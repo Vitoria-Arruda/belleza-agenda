@@ -1,11 +1,21 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useBooking } from "@/lib/booking/store";
-import { dateKey, fmtTime, toMin, type Block } from "@/lib/booking/availability";
+import { dateKey, fmtTime, validateBlock, type Block } from "@/lib/booking/availability";
 import { fmtDate } from "@/lib/booking/data";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 
-export const Route = createFileRoute("/admin/bloqueios")({ component: Bloqueios });
+export const Route = createFileRoute("/admin/bloqueios")({
+  head: () => ({ meta: [
+    { title: "Bloqueios de agenda — Ateliê Lume" },
+    { name: "description", content: "Organize folgas, férias e exceções aos horários do Ateliê Lume." },
+    { property: "og:title", content: "Bloqueios de agenda — Ateliê Lume" },
+    { property: "og:description", content: "Organize folgas, férias e exceções aos horários do Ateliê Lume." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
+  component: Bloqueios });
 
 const KINDS = [
   { k: "day", label: "Dia inteiro" },
@@ -29,11 +39,11 @@ function Bloqueios() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     setOk(false);
-    if (!date) return setError("Informe a data.");
-    if (kind === "range" && (!endDate || endDate < date)) return setError("A data final deve ser igual ou posterior à inicial.");
-    if (kind === "time" && toMin(end) <= toMin(start)) return setError("O horário final deve ser posterior ao inicial.");
     const r = reason.trim() || undefined;
-    addBlock(kind === "day" ? { id: "", kind, date, reason: r } : kind === "time" ? { id: "", kind, date, start, end, reason: r } : { id: "", kind, date, endDate, reason: r });
+    const block: Block = kind === "day" ? { id: "", kind, date, reason: r } : kind === "time" ? { id: "", kind, date, start, end, reason: r } : { id: "", kind, date, endDate, reason: r };
+    const validation = validateBlock(block);
+    if (validation) return setError(validation);
+    addBlock(block);
     setError(""); setReason(""); setOk(true);
   };
 
@@ -54,8 +64,8 @@ function Bloqueios() {
             <legend className="mb-2 text-sm font-medium">Tipo de bloqueio</legend>
             <div className="grid gap-2 sm:grid-cols-3">
               {KINDS.map((o) => (
-                <button key={o.k} type="button" aria-pressed={kind === o.k} onClick={() => { setKind(o.k); setError(""); }}
-                  className={`min-h-11 rounded-lg border px-3 text-sm ${kind === o.k ? "border-primary bg-secondary font-medium text-secondary-foreground" : "bg-card"}`}>{o.label}</button>
+                <Button variant="plain" size="auto" key={o.k} type="button" aria-pressed={kind === o.k} onClick={() => { setKind(o.k); setError(""); }}
+                  className={`min-h-11 rounded-lg border px-3 text-sm ${kind === o.k ? "border-primary bg-secondary font-medium text-secondary-foreground" : "bg-card"}`}>{o.label}</Button>
               ))}
             </div>
           </fieldset>
@@ -83,7 +93,7 @@ function Bloqueios() {
           </div>
           {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
           {ok && <p className="text-sm text-sage-foreground" role="status">✓ Bloqueio adicionado e aplicado ao calendário.</p>}
-          <button className="btn btn-primary w-full">Adicionar bloqueio</button>
+          <Button variant="plain" size="auto" className="btn btn-primary w-full">Adicionar bloqueio</Button>
         </form>
       </section>
       <section>
@@ -99,7 +109,7 @@ function Bloqueios() {
                     <p className="mt-2 text-sm capitalize">{d}</p>
                     {b.reason && <p className="text-sm text-muted-foreground">{b.reason}</p>}
                   </div>
-                  <button className="btn btn-ghost min-h-10 px-3 text-sm text-destructive" onClick={() => setToRemove(b.id)}>Remover</button>
+                  <Button variant="plain" size="auto" className="btn btn-ghost min-h-10 px-3 text-sm text-destructive" onClick={() => setToRemove(b.id)}>Remover</Button>
                 </li>
               );
             })}

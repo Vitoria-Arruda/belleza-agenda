@@ -1,9 +1,10 @@
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { dateKey } from "@/lib/booking/availability";
 
 type Props = {
-  selected?: string;
+  selected?: string | undefined;
   onSelect: (k: string) => void;
   isAvailable: (k: string) => boolean;
 };
@@ -22,9 +23,9 @@ export function MonthCalendar({ selected, onSelect, isAvailable }: Props) {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <button type="button" className="btn btn-ghost size-11 px-0" onClick={() => move(-1)} disabled={!canPrev} aria-label="Mês anterior"><ChevronLeft className="size-4" /></button>
+        <Button variant="plain" size="auto" type="button" className="btn btn-ghost size-11 px-0" onClick={() => move(-1)} disabled={!canPrev} aria-label="Mês anterior"><ChevronLeft className="size-4" /></Button>
         <p className="font-display text-xl capitalize">{view.toLocaleDateString("pt-BR", { month: "long", year: "numeric" })}</p>
-        <button type="button" className="btn btn-ghost size-11 px-0" onClick={() => move(1)} aria-label="Próximo mês"><ChevronRight className="size-4" /></button>
+        <Button variant="plain" size="auto" type="button" className="btn btn-ghost size-11 px-0" onClick={() => move(1)} aria-label="Próximo mês"><ChevronRight className="size-4" /></Button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center">
         {WD.map((d, i) => <span key={i} className="pb-2 text-xs text-muted-foreground">{d}</span>)}
@@ -35,7 +36,7 @@ export function MonthCalendar({ selected, onSelect, isAvailable }: Props) {
           const ok = !past && isAvailable(k);
           const sel = k === selected;
           return (
-            <button
+            <Button variant="plain" size="auto"
               key={k}
               type="button"
               disabled={!ok}
@@ -49,7 +50,7 @@ export function MonthCalendar({ selected, onSelect, isAvailable }: Props) {
               } ${k === todayKey && !sel ? "ring-1 ring-primary/40" : ""}`}
             >
               {i + 1}
-            </button>
+            </Button>
           );
         })}
       </div>

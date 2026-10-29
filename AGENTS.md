@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep booking, weekly availability and exceptions in a shared React provider so all screens stay synchronized without persistence.
+- Validate slot availability inside the booking action, using a synchronous reservation reference to prevent duplicate confirmations.
+- Use the shared Button plain/auto variants for custom booking controls, preserving the prototype's semantic token styling.

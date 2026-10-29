@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import type { Booking } from "@/lib/booking/availability";
 import { fmtTime } from "@/lib/booking/availability";
@@ -36,8 +37,8 @@ export function BookingList({ items, showClient }: { items: Booking[]; showClien
                 </dl>
               )}
               <div className="mt-3 flex gap-2">
-                <button className="btn btn-ghost min-h-10 px-3 text-sm" aria-expanded={expanded} onClick={() => setOpen(expanded ? null : b.id)}>{expanded ? "Ocultar detalhes" : "Ver detalhes"}</button>
-                {b.status === "confirmado" && <button className="btn btn-ghost min-h-10 px-3 text-sm text-destructive" onClick={() => setToCancel(b.id)}>Cancelar</button>}
+                <Button variant="plain" size="auto" className="btn btn-ghost min-h-10 px-3 text-sm" aria-expanded={expanded} onClick={() => setOpen(expanded ? null : b.id)}>{expanded ? "Ocultar detalhes" : "Ver detalhes"}</Button>
+                {b.status === "confirmado" && <Button variant="plain" size="auto" className="btn btn-ghost min-h-10 px-3 text-sm text-destructive" onClick={() => setToCancel(b.id)}>Cancelar</Button>}
               </div>
             </li>
           );

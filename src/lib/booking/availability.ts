@@ -2,24 +2,25 @@ export type Period = { start: string; end: string }; // "HH:MM"
 export type DayConfig = { enabled: boolean; periods: Period[] };
 export type Weekly = Record<number, DayConfig>; // 0 = domingo
 export type Block =
-  | { id: string; kind: "day"; date: string; reason?: string }
-  | { id: string; kind: "time"; date: string; start: string; end: string; reason?: string }
-  | { id: string; kind: "range"; date: string; endDate: string; reason?: string };
+  | { id: string; kind: "day"; date: string; reason?: string | undefined }
+  | { id: string; kind: "time"; date: string; start: string; end: string; reason?: string | undefined }
+  | { id: string; kind: "range"; date: string; endDate: string; reason?: string | undefined };
 export type Booking = {
   id: string;
   serviceId: string;
   date: string;
   time: string;
   duration: number;
-  notes?: string;
+  notes?: string | undefined;
   clientName: string;
   status: "confirmado" | "cancelado";
 };
 
 export const SLOT_STEP = 30;
+export const isValidTime = (time: string) => /^([01]\d|2[0-3]):[0-5]\d$/.test(time);
 
 export const toMin = (t: string) => {
-  const [h, m] = t.split(":").map(Number);
+  const [h = 0, m = 0] = t.split(":").map(Number);
   return h * 60 + m;
 };
 export const toTime = (m: number) =>
@@ -32,7 +33,7 @@ export const fmtTime = (t: string) => {
 export const dateKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 export const parseKey = (k: string) => {
-  const [y, m, d] = k.split("-").map(Number);
+  const [y = 1970, m = 1, d = 1] = k.split("-").map(Number);
   return new Date(y, m - 1, d);
 };
 
@@ -41,11 +42,24 @@ export function validateDay(day: DayConfig): string | null {
   if (day.periods.length === 0) return "Adicione ao menos um período.";
   for (const p of day.periods) {
     if (!p.start || !p.end) return "Preencha início e fim.";
+    if (!isValidTime(p.start) || !isValidTime(p.end)) return "Informe horários válidos.";
     if (toMin(p.end) <= toMin(p.start)) return "O horário final deve ser posterior ao inicial.";
   }
   const sorted = [...day.periods].sort((a, b) => toMin(a.start) - toMin(b.start));
   for (let i = 1; i < sorted.length; i++) {
-    if (toMin(sorted[i].start) < toMin(sorted[i - 1].end)) return "Os períodos não podem se sobrepor.";
+    const current = sorted[i];
+    const previous = sorted[i - 1];
+    if (current && previous && toMin(current.start) < toMin(previous.end)) return "Os períodos não podem se sobrepor.";
+  }
+  return null;
+}
+
+export function validateBlock(block: Block): string | null {
+  if (!block.date) return "Informe a data.";
+  if (block.kind === "range" && (!block.endDate || block.endDate < block.date)) return "A data final deve ser igual ou posterior à inicial.";
+  if (block.kind === "time") {
+    if (!isValidTime(block.start) || !isValidTime(block.end)) return "Preencha início e fim com horários válidos.";
+    if (toMin(block.end) <= toMin(block.start)) return "O horário final deve ser posterior ao inicial.";
   }
   return null;
 }

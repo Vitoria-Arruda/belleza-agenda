@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageShell, Steps } from "@/components/site-header";
@@ -7,6 +8,8 @@ import { formatCPF, formatPhone, validateClient } from "@/lib/booking/validation
 export const Route = createFileRoute("/cadastro")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Cadastro — Ateliê Lume" },
       { name: "description", content: "Informe seus dados para iniciar o agendamento." },
       { property: "og:title", content: "Cadastro — Ateliê Lume" },
@@ -62,7 +65,7 @@ function Cadastro() {
               </div>
             );
           })}
-          <button type="submit" className="btn btn-primary w-full">Continuar para o agendamento</button>
+          <Button variant="plain" size="auto" type="submit" className="btn btn-primary w-full">Continuar para o agendamento</Button>
         </form>
       </div>
     </PageShell>

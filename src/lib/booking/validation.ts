@@ -17,7 +17,7 @@ export function formatCPF(v: string) {
 }
 
 export function validateClient(c: { name: string; email: string; phone: string; cpf: string }) {
-  const e: Record<string, string> = {};
+  const e: Partial<Record<"name" | "email" | "phone" | "cpf", string>> = {};
   if (!c.name.trim()) e.name = "Informe seu nome completo.";
   else if (c.name.trim().split(/\s+/).length < 2) e.name = "Informe nome e sobrenome.";
   if (!c.email.trim()) e.email = "Informe seu e-mail.";

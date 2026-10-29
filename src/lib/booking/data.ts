@@ -45,7 +45,7 @@ export const initialBlocks = (): Block[] => [
 
 export const brl = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 export const fmtDate = (k: string, opts: Intl.DateTimeFormatOptions = { weekday: "long", day: "numeric", month: "long" }) => {
-  const [y, m, d] = k.split("-").map(Number);
+  const [y = 1970, m = 1, d = 1] = k.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString("pt-BR", opts);
 };
 export const fmtDuration = (m: number) => (m < 60 ? `${m} min` : m % 60 ? `${Math.floor(m / 60)}h${m % 60}` : `${m / 60}h`);
