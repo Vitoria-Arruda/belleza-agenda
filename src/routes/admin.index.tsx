@@ -49,14 +49,18 @@ function Overview() {
         <section className="card p-5">
           <div className="flex items-center justify-between"><h2 className="text-2xl">Expediente semanal</h2><Link to="/admin/disponibilidade" className="text-sm text-primary underline-offset-4 hover:underline">Editar</Link></div>
           <ul className="mt-3 space-y-2 text-sm">
-            {WEEK_ORDER.map((d) => (
+            {WEEK_ORDER.map((d) => {
+              const day = weekly[d];
+              if (!day) return null;
+              return (
               <li key={d} className="flex justify-between gap-3">
                 <span>{WEEKDAYS[d]}</span>
-                <span className={weekly[d].enabled ? "" : "text-muted-foreground"}>
-                  {weekly[d].enabled ? weekly[d].periods.map((p) => `${fmtTime(p.start)}–${fmtTime(p.end)}`).join(" · ") : "Indisponível"}
+                <span className={day.enabled ? "text-right" : "text-right text-muted-foreground"}>
+                  {day.enabled ? day.periods.map((p) => `${fmtTime(p.start)}–${fmtTime(p.end)}`).join(" · ") : "Indisponível"}
                 </span>
               </li>
-            ))}
+              );
+            })}
           </ul>
         </section>
       </div>

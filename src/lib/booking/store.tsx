@@ -4,7 +4,7 @@ import { getSlots } from "./availability";
 import { getService, initialBlocks, initialBookings, initialWeekly } from "./data";
 
 export type Client = { name: string; email: string; phone: string; cpf: string };
-export type Draft = { serviceId?: string; date?: string; time?: string; notes: string };
+export type Draft = { serviceId?: string | undefined; date?: string | undefined; time?: string | undefined; notes: string };
 
 type Store = {
   client: Client | null;

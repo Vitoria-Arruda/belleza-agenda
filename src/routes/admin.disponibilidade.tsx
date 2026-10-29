@@ -21,10 +21,10 @@ function Disponibilidade() {
   const { weekly, setWeekly } = useBooking();
   const [form, setForm] = useState<Weekly>(() => structuredClone(weekly));
   const [saved, setSaved] = useState<"ok" | "err" | null>(null);
-  const errors = Object.fromEntries(WEEK_ORDER.map((d) => [d, validateDay(form[d])]));
+  const errors = Object.fromEntries(WEEK_ORDER.map((d) => [d, validateDay(form[d] ?? { enabled: false, periods: [] })]));
   const hasErr = Object.values(errors).some(Boolean);
 
-  const update = (d: number, fn: (c: Weekly[number]) => Weekly[number]) => { setSaved(null); setForm({ ...form, [d]: fn(form[d]) }); };
+  const update = (d: number, fn: (c: Weekly[number]) => Weekly[number]) => { setSaved(null); setForm({ ...form, [d]: fn(form[d] ?? { enabled: false, periods: [] }) }); };
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -33,6 +33,7 @@ function Disponibilidade() {
       <div className="mt-6 space-y-3">
         {WEEK_ORDER.map((d) => {
           const day = form[d];
+          if (!day) return null;
           return (
             <div key={d} className="card p-4">
               <div className="flex items-center justify-between gap-3">

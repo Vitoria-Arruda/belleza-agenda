@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { dateKey } from "@/lib/booking/availability";
 
 type Props = {
-  selected?: string;
+  selected?: string | undefined;
   onSelect: (k: string) => void;
   isAvailable: (k: string) => boolean;
 };
