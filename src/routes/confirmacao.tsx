@@ -5,6 +5,7 @@ import { PageShell, Steps } from "@/components/site-header";
 import { useBooking } from "@/lib/booking/store";
 import { brl, fmtDate, fmtDuration, getService } from "@/lib/booking/data";
 import { fmtTime, getSlots } from "@/lib/booking/availability";
+import { sendCadastroWebhook } from "@/lib/booking/webhook";
 
 export const Route = createFileRoute("/confirmacao")({
   head: () => ({
@@ -87,6 +88,18 @@ function Confirmacao() {
               if (!draft.date || !draft.time) return;
               const booking = addBooking({ serviceId: service.id, date: draft.date, time: draft.time, duration: service.duration, notes: draft.notes.trim() || undefined, clientName: client.name });
               if (!booking) { setError("unavailable"); return; }
+              void sendCadastroWebhook({
+                nome: client.name,
+                email: client.email,
+                telefone: client.phone,
+                cpf: client.cpf,
+                servico: service.name,
+                data: draft.date,
+                horario: draft.time,
+                duracaoMinutos: service.duration,
+                valor: service.price,
+                observacoes: draft.notes.trim() || undefined,
+              });
               setDraft({ notes: "" });
               setDone(true);
             }}
