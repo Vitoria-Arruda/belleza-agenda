@@ -13,7 +13,7 @@ describe("webhook de cadastro", () => {
       fetchImpl,
     );
     expect(ok).toBe(true);
-    const [url, init] = fetchImpl.mock.calls[0];
+    const [url, init] = fetchImpl.mock.calls[0]!;
     expect(url).toBe(CADASTRO_WEBHOOK_URL);
     expect(init.method).toBe("POST");
     const body = JSON.parse(init.body);
@@ -29,6 +29,6 @@ describe("webhook de cadastro", () => {
     const ok = await sendCadastroWebhook({ nome: "Maria", email: "m@e.com", telefone: "1", cpf: "2" }, fetchImpl);
     expect(ok).toBe(true);
     expect(fetchImpl).toHaveBeenCalledTimes(2);
-    expect(fetchImpl.mock.calls[1][1].mode).toBe("no-cors");
+    expect(fetchImpl.mock.calls[1]![1].mode).toBe("no-cors");
   });
 });

@@ -7,12 +7,12 @@ export type CadastroWebhookPayload = {
   email: string;
   telefone: string;
   cpf: string;
-  servico?: string;
-  data?: string;
-  horario?: string;
-  duracaoMinutos?: number;
-  valor?: number;
-  observacoes?: string;
+  servico?: string | undefined;
+  data?: string | undefined;
+  horario?: string | undefined;
+  duracaoMinutos?: number | undefined;
+  valor?: number | undefined;
+  observacoes?: string | undefined;
 };
 
 /**
