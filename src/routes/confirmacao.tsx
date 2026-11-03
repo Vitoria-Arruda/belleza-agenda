@@ -5,7 +5,7 @@ import { PageShell, Steps } from "@/components/site-header";
 import { useBooking } from "@/lib/booking/store";
 import { brl, fmtDate, fmtDuration, getService } from "@/lib/booking/data";
 import { fmtTime, getSlots } from "@/lib/booking/availability";
-import { sendCadastroWebhook } from "@/lib/booking/webhook";
+import { sendAgendamentoWebhook, sendCadastroWebhook } from "@/lib/booking/webhook";
 
 export const Route = createFileRoute("/confirmacao")({
   head: () => ({
@@ -92,6 +92,16 @@ function Confirmacao() {
                 nome: client.name,
                 email: client.email,
                 telefone: client.phone,
+                cpf: client.cpf,
+                servico: service.name,
+                data: draft.date,
+                horario: draft.time,
+                duracaoMinutos: service.duration,
+                valor: service.price,
+                observacoes: draft.notes.trim() || undefined,
+              });
+              void sendAgendamentoWebhook({
+                nome: client.name,
                 cpf: client.cpf,
                 servico: service.name,
                 data: draft.date,

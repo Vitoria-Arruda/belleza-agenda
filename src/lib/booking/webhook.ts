@@ -49,3 +49,26 @@ export async function sendCadastroWebhook(
     }
   }
 }
+
+/** Endpoint do webhook n8n que recebe os dados do agendamento. */
+export const AGENDAMENTO_WEBHOOK_URL =
+  "https://walrus-obedient-siding.ngrok-free.dev/webhook/cadastro-agendamento";
+
+export type AgendamentoWebhookPayload = {
+  nome: string;
+  cpf: string;
+  servico: string;
+  data: string;
+  horario: string;
+  duracaoMinutos: number;
+  valor: number;
+  observacoes?: string | undefined;
+};
+
+/** Envia os dados do agendamento (com nome e CPF do cadastro) ao webhook. */
+export function sendAgendamentoWebhook(
+  payload: AgendamentoWebhookPayload,
+  fetchImpl: typeof fetch = fetch,
+): Promise<boolean> {
+  return sendCadastroWebhook(payload as unknown as CadastroWebhookPayload, fetchImpl, AGENDAMENTO_WEBHOOK_URL);
+}
