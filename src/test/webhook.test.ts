@@ -32,3 +32,19 @@ describe("webhook de cadastro", () => {
     expect(fetchImpl.mock.calls[1]![1].mode).toBe("no-cors");
   });
 });
+
+import { AGENDAMENTO_WEBHOOK_URL, sendAgendamentoWebhook } from "@/lib/booking/webhook";
+
+describe("webhook de agendamento", () => {
+  it("envia nome, CPF e dados do agendamento para a URL de agendamento", async () => {
+    expect(AGENDAMENTO_WEBHOOK_URL).toBe("https://walrus-obedient-siding.ngrok-free.dev/webhook/cadastro-agendamento");
+    const fetchImpl = vi.fn().mockResolvedValue(new Response(null, { status: 200 }));
+    await sendAgendamentoWebhook(
+      { nome: "Maria", cpf: "123.456.789-00", servico: "Design de sobrancelhas", data: "2026-11-10", horario: "10:00", duracaoMinutos: 45, valor: 80 },
+      fetchImpl,
+    );
+    const [url, init] = fetchImpl.mock.calls[0]!;
+    expect(url).toBe(AGENDAMENTO_WEBHOOK_URL);
+    expect(JSON.parse(init.body)).toMatchObject({ nome: "Maria", cpf: "123.456.789-00", servico: "Design de sobrancelhas", data: "2026-11-10", horario: "10:00" });
+  });
+});
