@@ -5,6 +5,7 @@ import { PageShell, Steps } from "@/components/site-header";
 import { useBooking } from "@/lib/booking/store";
 import { brl, fmtDate, fmtDuration, getService } from "@/lib/booking/data";
 import { fmtTime, getSlots } from "@/lib/booking/availability";
+import { sendCadastroWebhook } from "@/lib/booking/webhook";
 
 export const Route = createFileRoute("/confirmacao")({
   head: () => ({
