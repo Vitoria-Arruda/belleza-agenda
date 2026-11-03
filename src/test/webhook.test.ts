@@ -25,7 +25,7 @@ describe("webhook de cadastro", () => {
     const fetchImpl = vi
       .fn()
       .mockRejectedValueOnce(new TypeError("Failed to fetch"))
-      .mockResolvedValueOnce(new Response(null, { status: 0 }));
+      .mockResolvedValueOnce({ ok: false, status: 0 } as unknown as Response);
     const ok = await sendCadastroWebhook({ nome: "Maria", email: "m@e.com", telefone: "1", cpf: "2" }, fetchImpl);
     expect(ok).toBe(true);
     expect(fetchImpl).toHaveBeenCalledTimes(2);
